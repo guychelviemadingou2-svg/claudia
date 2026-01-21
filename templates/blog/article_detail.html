@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} - Cosmos Blog{% endblock %}
+{% block content %}
+<article class="card glassy border-0 p-4 mb-4">
+    {% if article.cover_image %}
+        <img src="{{ article.cover_image.url }}" class="img-fluid rounded mb-3" alt="{{ article.title }}">
+    {% endif %}
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <h1 class="text-light">{{ article.title }}</h1>
+            <p class="text-muted small mb-0">Par {{ article.author }} • {{ article.created_at|date:"d/m/Y H:i" }}</p>
+        </div>
+        <div class="text-end">
+            <div class="badge bg-secondary glassy">❤️ {{ article.likes.count }} • 💬 {{ article.comments_count }}</div>
+            {% if user == article.author or user.is_staff %}
+                <div class="mt-2">
+                    <a class="btn btn-outline-light btn-sm" href="{% url 'article_update' article.pk %}">Modifier</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{% url 'article_delete' article.pk %}">Supprimer</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <p class="lead text-secondary">{{ article.content }}</p>
+    <div class="d-flex gap-2">
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'toggle_like' article.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if user in article.likes.all %}btn-light{% else %}btn-primary{% endif %} btn-sm">
+                    {% if user in article.likes.all %}Déjà aimé{% else %}J'aime{% endif %}
+                </button>
+            </form>
+        {% else %}
+            <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}?next={{ request.path }}">Connectez-vous pour aimer</a>
+        {% endif %}
+    </div>
+</article>
+
+<section class="card glassy border-0 p-4">
+    <h2 class="text-light h4 mb-3">Commentaires ({{ article.comments_count }})</h2>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'add_comment' article.pk %}" class="mb-4">
+            {% csrf_token %}
+            {{ comment_form.body }}
+            <button type="submit" class="btn btn-primary mt-2">Publier</button>
+        </form>
+    {% else %}
+        <div class="alert alert-info glassy">Connectez-vous pour commenter.</div>
+    {% endif %}
+
+    <div class="comment-thread">
+        {% include "blog/comment_tree.html" with comments=parent_comments %}
+    </div>
+</section>
+{% endblock %}

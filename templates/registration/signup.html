@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Inscription - Cosmos Blog{% endblock %}
+{% block content %}
+<div class="card glassy border-0 p-4 mx-auto" style="max-width: 480px;">
+    <h1 class="text-light h4 mb-3">Créer un compte</h1>
+    
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_username" class="form-label text-light">Nom d'utilisateur</label>
+            <input type="text" name="username" class="form-control" id="id_username" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label text-light">Email</label>
+            <input type="email" name="email" class="form-control" id="id_email" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_password1" class="form-label text-light">Mot de passe</label>
+            <input type="password" name="password1" class="form-control" id="id_password1" required>
+            <small class="text-muted">8 caractères minimum</small>
+        </div>
+        <div class="mb-3">
+            <label for="id_password2" class="form-label text-light">Confirmer le mot de passe</label>
+            <input type="password" name="password2" class="form-control" id="id_password2" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+    </form>
+    <p class="text-muted small mt-3 mb-0">Déjà inscrit ? <a href="{% url 'login' %}" class="text-lavender">Connexion</a></p>
+</div>
+{% endblock %}

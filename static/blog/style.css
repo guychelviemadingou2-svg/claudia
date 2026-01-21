@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --night: #0f0a1f;
+    --deep-purple: #1c1238;
+    --lavender: #b388ff;
+    --electric: #7c4dff;
+    --muted: #9aa0b5;
+}
+
+* { font-family: 'Inter', sans-serif; }
+
+.bg-night { background: radial-gradient(circle at 20% 20%, #1c1238 0, #0f0a1f 50%, #0b0816 100%); min-height: 100vh; }
+.glassy { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); }
+.text-lavender { color: var(--lavender) !important; }
+.dot { color: var(--electric); }
+
+a { color: var(--lavender); }
+a:hover { color: #d1b3ff; text-decoration: none; }
+
+.card { color: #e5e7ef; }
+.card p { color: var(--muted); }
+
+.btn-primary { background: linear-gradient(135deg, var(--electric), var(--lavender)); border: none; }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-outline-light { border-color: rgba(255,255,255,0.4); color: #f5f6ff; }
+
+.form-control, .page-link { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.08); color: #e5e7ef; }
+.form-control:focus { border-color: var(--lavender); box-shadow: 0 0 0 0.25rem rgba(124, 77, 255, 0.25); }
+input[type="text"], input[type="password"], input[type="email"] {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e5e7ef;
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 100%;
+}
+
+.comment-thread .comment { border-radius: 12px; }
+.pagination .page-link { color: #fff; }
+.pagination .active .page-link { background: var(--electric); border-color: var(--electric); }

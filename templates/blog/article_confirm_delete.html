@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Supprimer - Cosmos Blog{% endblock %}
+{% block content %}
+<div class="card glassy border-0 p-4">
+    <h1 class="text-light h4 mb-3">Supprimer cet article ?</h1>
+    <p class="text-secondary">Cette action est définitive.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+        <a href="{% url 'article_detail' object.pk %}" class="btn btn-outline-light">Annuler</a>
+    </form>
+</div>
+{% endblock %}

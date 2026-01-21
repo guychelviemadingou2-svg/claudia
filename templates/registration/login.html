@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Connexion - Cosmos Blog{% endblock %}
+{% block content %}
+<div class="card glassy border-0 p-4 mx-auto" style="max-width: 420px;">
+    <h1 class="text-light h4 mb-3">Connexion</h1>
+    
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {{ form.errors }}
+        </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_username" class="form-label text-light">Nom d'utilisateur</label>
+            <input type="text" name="username" class="form-control" id="id_username" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_password" class="form-label text-light">Mot de passe</label>
+            <input type="password" name="password" class="form-control" id="id_password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+    </form>
+    <p class="text-muted small mt-3 mb-0">Pas de compte ? <a href="{% url 'signup' %}" class="text-lavender">Inscrivez-vous</a></p>
+</div>
+{% endblock %}
