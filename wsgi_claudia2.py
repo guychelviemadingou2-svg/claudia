@@ -1,9 +1,9 @@
-# WSGI config for PythonAnywhere
+# WSGI config for claudia2.pythonanywhere.com
 import os
 import sys
 
 # Ajouter le chemin de votre projet
-path = '/home/VOTRE_USERNAME/monapp'
+path = '/home/claudia2/claudia'
 if path not in sys.path:
     sys.path.insert(0, path)
 

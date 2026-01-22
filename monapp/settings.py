@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o4q3m4)kek*i^4oh#3(^ty147j7s@azt10k0v*rux!7ow43_jq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', 'VOTRE_USERNAME.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', 'claudia2.pythonanywhere.com']
 
 
 # Application definition
@@ -115,8 +115,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (uploads)
 MEDIA_URL = '/media/'

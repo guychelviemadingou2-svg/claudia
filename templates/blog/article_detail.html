@@ -1,54 +1,122 @@
 {% extends "base.html" %}
 {% block title %}{{ article.title }} - Cosmos Blog{% endblock %}
 {% block content %}
-<article class="card glassy border-0 p-4 mb-4">
+<article class="cosmic-card p-5 mb-5">
     {% if article.cover_image %}
-        <img src="{{ article.cover_image.url }}" class="img-fluid rounded mb-3" alt="{{ article.title }}">
+        <div class="position-relative mb-4 overflow-hidden" style="border-radius: 20px; height: 300px;">
+            <img src="{{ article.cover_image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ article.title }}">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(45deg, rgba(139, 92, 246, 0.2), transparent);"></div>
+        </div>
     {% endif %}
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <div>
-            <h1 class="text-light">{{ article.title }}</h1>
-            <p class="text-muted small mb-0">Par {{ article.author }} • {{ article.created_at|date:"d/m/Y H:i" }}</p>
-        </div>
-        <div class="text-end">
-            <div class="badge bg-secondary glassy">❤️ {{ article.likes.count }} • 💬 {{ article.comments_count }}</div>
-            {% if user == article.author or user.is_staff %}
-                <div class="mt-2">
-                    <a class="btn btn-outline-light btn-sm" href="{% url 'article_update' article.pk %}">Modifier</a>
-                    <a class="btn btn-outline-danger btn-sm" href="{% url 'article_delete' article.pk %}">Supprimer</a>
+    
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div class="flex-grow-1">
+            <h1 class="gradient-text display-5 fw-bold mb-3">{{ article.title }}</h1>
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-gradient rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--electric-violet), var(--soft-lavender)) !important;">
+                    <span class="text-white fw-bold fs-5">{{ article.author.username|first|upper }}</span>
                 </div>
-            {% endif %}
+                <div>
+                    <strong class="text-cosmic fs-5">{{ article.author.username }}</strong><br>
+                    <small class="text-muted">📅 {{ article.created_at|date:"d F Y à H:i" }}</small>
+                </div>
+            </div>
         </div>
+        
+        {% if user == article.author or user.is_staff %}
+            <div class="dropdown">
+                <button class="btn btn-outline-cosmic dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <span class="me-1">⚙️</span>Actions
+                </button>
+                <ul class="dropdown-menu glassy">
+                    <li><a class="dropdown-item text-cosmic" href="{% url 'article_update' article.pk %}">✏️ Modifier</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'article_delete' article.pk %}">🗑️ Supprimer</a></li>
+                </ul>
+            </div>
+        {% endif %}
     </div>
-    <p class="lead text-secondary">{{ article.content }}</p>
-    <div class="d-flex gap-2">
+    
+    <div class="article-content mb-4">
+        <p class="fs-5 text-secondary lh-lg">{{ article.content|linebreaks }}</p>
+    </div>
+    
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex gap-4">
+            <div class="d-flex align-items-center">
+                <span class="text-cosmic fs-4 me-2">❤️</span>
+                <span class="text-muted">{{ article.likes.count }} J'aime</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="text-cosmic fs-4 me-2">💬</span>
+                <span class="text-muted">{{ article.comments_count }} Commentaires</span>
+            </div>
+        </div>
+        
         {% if user.is_authenticated %}
             <form method="post" action="{% url 'toggle_like' article.pk %}">
                 {% csrf_token %}
-                <button type="submit" class="btn {% if user in article.likes.all %}btn-light{% else %}btn-primary{% endif %} btn-sm">
-                    {% if user in article.likes.all %}Déjà aimé{% else %}J'aime{% endif %}
+                <button type="submit" class="btn {% if user in article.likes.all %}btn-cosmic{% else %}btn-outline-cosmic{% endif %} btn-lg">
+                    <span class="me-2">{% if user in article.likes.all %}💜{% else %}🤍{% endif %}</span>
+                    {% if user in article.likes.all %}Aimé{% else %}J'aime{% endif %}
                 </button>
             </form>
         {% else %}
-            <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}?next={{ request.path }}">Connectez-vous pour aimer</a>
+            <a class="btn btn-outline-cosmic btn-lg" href="{% url 'login' %}?next={{ request.path }}">
+                <span class="me-2">🔐</span>Se connecter pour aimer
+            </a>
         {% endif %}
     </div>
 </article>
 
-<section class="card glassy border-0 p-4">
-    <h2 class="text-light h4 mb-3">Commentaires ({{ article.comments_count }})</h2>
+<section class="cosmic-card p-5">
+    <div class="d-flex align-items-center mb-4">
+        <h2 class="gradient-text h3 mb-0 me-3">💬 Espace de Discussion</h2>
+        <span class="badge bg-gradient fs-6" style="background: linear-gradient(135deg, var(--electric-violet), var(--soft-lavender)) !important;">{{ article.comments_count }} messages</span>
+    </div>
+    
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'add_comment' article.pk %}" class="mb-4">
-            {% csrf_token %}
-            {{ comment_form.body }}
-            <button type="submit" class="btn btn-primary mt-2">Publier</button>
-        </form>
+        <div class="cosmic-card p-4 mb-4">
+            <h4 class="text-cosmic mb-3">✨ Partagez votre avis</h4>
+            <form method="post" action="{% url 'add_comment' article.pk %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <textarea name="body" class="form-control" rows="4" placeholder="Exprimez votre pensée sur cet article..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-cosmic">
+                    <span class="me-2">🚀</span>Publier mon commentaire
+                </button>
+            </form>
+        </div>
     {% else %}
-        <div class="alert alert-info glassy">Connectez-vous pour commenter.</div>
+        <div class="alert alert-info glassy mb-4">
+            <div class="d-flex align-items-center">
+                <span class="fs-3 me-3">🔐</span>
+                <div>
+                    <strong>Rejoignez la conversation !</strong><br>
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="text-cosmic fw-bold">Connectez-vous</a> ou 
+                    <a href="{% url 'signup' %}" class="text-cosmic fw-bold">créez un compte</a> pour commenter.
+                </div>
+            </div>
+        </div>
     {% endif %}
 
-    <div class="comment-thread">
-        {% include "blog/comment_tree.html" with comments=parent_comments %}
+    <div class="comments-section">
+        {% for comment in parent_comments %}
+            {% include 'blog/comment_tree.html' with comment=comment %}
+        {% empty %}
+            <div class="text-center py-5">
+                <div class="cosmic-card p-4 d-inline-block">
+                    <h4 class="text-muted mb-3">🌌 Silence cosmique</h4>
+                    <p class="text-muted">Soyez le premier à partager vos pensées sur cet article !</p>
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-cosmic" onclick="document.querySelector('textarea').focus()">
+                            <span class="me-2">✨</span>Commencer la discussion
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}

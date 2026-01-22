@@ -1,27 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Connexion - Cosmos Blog{% endblock %}
 {% block content %}
-<div class="card glassy border-0 p-4 mx-auto" style="max-width: 420px;">
-    <h1 class="text-light h4 mb-3">Connexion</h1>
+<div class="cosmic-card p-5 mx-auto" style="max-width: 420px; border-radius: 25px;">
+    <div class="text-center mb-4">
+        <h1 class="gradient-text h2 mb-2">🌌 Bon retour !</h1>
+        <p class="text-muted">Reconnectez-vous à l'univers Cosmos</p>
+    </div>
     
     {% if form.errors %}
-        <div class="alert alert-danger">
-            {{ form.errors }}
+        <div class="alert alert-danger glassy mb-4">
+            <span class="me-2">⚠️</span><strong>Erreur :</strong> Identifiants incorrects.
         </div>
     {% endif %}
     
     <form method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="id_username" class="form-label text-light">Nom d'utilisateur</label>
-            <input type="text" name="username" class="form-control" id="id_username" required>
+        <div class="mb-4">
+            <label for="id_username" class="form-label">👤 Nom d'utilisateur</label>
+            <input type="text" name="username" class="form-control" id="id_username" placeholder="Votre pseudo" required autocomplete="username">
         </div>
-        <div class="mb-3">
-            <label for="id_password" class="form-label text-light">Mot de passe</label>
-            <input type="password" name="password" class="form-control" id="id_password" required>
+        <div class="mb-4">
+            <label for="id_password" class="form-label">🔐 Mot de passe</label>
+            <input type="password" name="password" class="form-control" id="id_password" placeholder="Votre mot de passe" required autocomplete="current-password">
         </div>
-        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+        <button type="submit" class="btn btn-cosmic w-100 mb-4">
+            <span class="me-2">🚀</span>Se connecter
+        </button>
     </form>
-    <p class="text-muted small mt-3 mb-0">Pas de compte ? <a href="{% url 'signup' %}" class="text-lavender">Inscrivez-vous</a></p>
+    
+    <div class="alert alert-info glassy mb-4">
+        <strong>📝 Compte test :</strong><br>
+        Utilisateur : <code class="text-cosmic fw-bold">test</code><br>
+        Mot de passe : <code class="text-cosmic fw-bold">test123</code>
+    </div>
+    
+    <div class="text-center">
+        <p class="text-muted small mb-0">Nouveau sur Cosmos ? <a href="{% url 'signup' %}" class="text-cosmic fw-bold">Créer un compte</a></p>
+    </div>
 </div>
 {% endblock %}
